@@ -1,0 +1,171 @@
+{% extends 'layouts/master.html' %}
+{% load static %}
+
+{% block title %}
+    Employee | Create
+{% endblock title %}
+
+{% block styles %}
+<style>
+
+</style>
+{% endblock styles %}
+
+{% block content %}
+
+
+<div class="card mb-3">
+    <div class="card-header">
+        <div class="row flex-between-end">
+            <div class="col-auto align-self-center">
+                <h5 class="mb-0" data-anchor="data-anchor">Employee Create</h5>
+            </div>
+        </div>
+    </div>
+    <div class="card-body bg-light">
+        <div class="tab-content">
+            <div class="tab-pane preview-tab-pane active" role="tabpanel"
+                aria-labelledby="tab-dom-68f59ccc-3b08-4ccc-af2d-26fccf62a3ae"
+                id="dom-68f59ccc-3b08-4ccc-af2d-26fccf62a3ae">
+                <form class="row g-3" method="post" enctype="multipart/form-data">
+                    <!-- Display form-level errors if they exist -->
+                    {% if form.non_field_errors %}
+                    <ul class="errorlist">
+                        {% for error in form.non_field_errors %}
+                        <li class="error-message">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    {% csrf_token %}
+
+
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label" for="name">First Name</label>
+                        <strong class="text-danger">*</strong>
+                        {{form.first_name}}
+                    </div>
+
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label" for="name">Last Name</label>
+                        <strong class="text-danger">*</strong>
+                        {{form.last_name}}
+                    </div>
+
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label" for="email">Email</label>
+                        <strong class="text-danger">*</strong>
+                        {{ form.email }}
+                        {% for error in form.email.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label" for="phone">Phone Number</label>
+                        <strong class="text-danger">*</strong>
+                        {{form.phone}}
+                        {% for error in form.phone.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label" for="user_type">Gender</label>
+                        {{form.gender}}
+                    </div>
+
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label" for="user_type">Birth Date</label>
+                        <strong><span class="fs--2 ms-1">(MM/DD/YYYY)</span></strong>
+                        </label>
+                        {{form.dob}}
+                    </div>
+
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label d-block" for="user_img">Profile Image</label>
+                        {{form.image}}
+                    </div>
+
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label d-block" for="joining">Joining Date</label>
+                        {{form.joining}}
+                    </div>
+
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label d-block" for="joining">Salary</label>
+                        {{form.user_salary}}
+                    </div>
+
+                    <div class="col-lg-8 mb-3">
+                        <label class="form-label d-block" for="user_img">Address</label>
+                        {{form.address}}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label" for="validationCustom01">
+                            Is Verified
+                        </label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" id="id_is_verified" type="checkbox" name="is_verified" checked="" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-end">
+                        <a class="btn btn-secondary" href="{% url 'employee:employee_list' %}">
+                            <i class="fa fa-times me-2"></i>
+                            Cancel
+                        </a>
+                        <button class="btn btn-primary ms-2" type="submit">
+                            <i class="fa fa-save me-2"></i>
+                            Submit
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <input type="file" style="border-style: dotted;"> -->
+{% endblock content %}
+
+
+{% block js %}
+<script>
+    var fieldErrors = {{ field_errors| safe }};
+
+    $(document).ready(function () {
+
+        if (fieldErrors.email.length > 0) {
+            $('#id_email').addClass('is-invalid');
+        }
+
+        if (fieldErrors.phone.length > 0) {
+            $('#id_phone').addClass('is-invalid');
+        }
+
+        if (fieldErrors.image.length > 0) {
+            $('#id_image').addClass('is-invalid');
+        }
+
+    });
+</script>
+
+<script>
+
+    // Setup handling for profile image
+    setupImageHandling('user_img', 'show_select_image_profile', 'remove_profile_image', '{% static "assets/img/upload-image2.2.png" %}');
+
+    // Setup handling for cover image
+    setupImageHandling('user_cov_img', 'show_select_image_cover', 'remove_cover_image', '{% static "assets/img/upload-image2.2.png" %}');
+</script>
+
+{% endblock js %}

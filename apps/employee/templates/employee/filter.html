@@ -1,0 +1,95 @@
+{% load static %}
+
+<div class="modal fade" id="filter-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 450px">
+      <div class="modal-content position-relative">
+        <div class="position-absolute top-0 end-0 mt-2 me-2 z-index-1">
+          <button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="get">
+
+          <div class="modal-body p-0">
+              <div class="rounded-top-lg py-3 ps-4 pe-6 bg-light">
+                  <h4 class="mb-1" id="modalExampleDemoLabel">
+                    <span class="fas fa-filter me-2 fs-1"></span>Employee Filter
+                  </h4>
+              </div>
+              <div class="p-4 pb-0">
+  
+                  <div class="mb-2">
+                      <label for="is_verified">Is Verified</label>
+                      <select class="form-select js-choice" id="is_verified" size="1" name="is_verified"
+                        data-options='{"removeItemButton":true,"placeholder":true}'>
+                          <option value="" 
+                            {% if not request.GET.is_verified %}selected{% endif %}>
+                            select
+                          </option>
+                          <option value="1" 
+                            {% if request.GET.is_verified == "1" %}selected{% endif %}>
+                            True
+                          </option>
+                          <option value="0" 
+                            {% if request.GET.is_verified == "0" %}selected{% endif %}>
+                            False
+                          </option>
+                      </select>
+                  </div>
+      
+                  <div class="mb-3">
+                    <label class="form-label" for="created_at">Joining Time Range</label>
+                    <!-- <input class="form-control datetimepicker" id="created_at" type="text" 
+                       placeholder="d/m/y to d/m/y" name="joining" 
+                       data-options='{"mode":"range","dateFormat":"d/m/y","disableMobile":true,"locale":"bn"}' 
+                       value="{{ request.GET.joining }}"> -->
+                    <div class="d-flex gap-2">
+                        <div class="flex-fill">
+                          <span class="fs--1">From</span>
+                          <input class="form-control" type="date" name="joining_from" value="{{request.GET.joining_from}}">
+                        </div>
+                        <div class="flex-fill">
+                          <span class="fs--1">To</span>
+                          <input class="form-control" type="date" name="joining_to" value="{{request.GET.joining_to}}">
+                        </div>
+                    </div>
+                  </div>
+      
+                  <div class="mb-3">
+                      <label class="form-label" for="created_at">Enroll Time Range</label>
+                      <!-- <input class="form-control datetimepicker" id="created_at" type="text" 
+                         placeholder="d/m/y to d/m/y" 
+                         data-options='{"mode":"range","dateFormat":"d/m/y","disableMobile":true,"locale":"bn"}' name="created_at" 
+                         value="{{ request.GET.created_at }}"> -->
+
+                      <div class="d-flex gap-2">
+                          <div class="flex-fill">
+                            <span class="fs--1">From</span>
+                            <input class="form-control" type="date" name="created_at_from" value="{{request.GET.created_at_from}}">
+                          </div>
+                          <div class="flex-fill">
+                            <span class="fs--1">To</span>
+                            <input class="form-control" type="date" name="created_at_to" value="{{request.GET.created_at_to}}">
+                          </div>
+                      </div>
+                  </div>
+      
+              </div>
+          </div>
+          <div class="modal-footer mt-3">
+              <a class="btn btn-secondary" href="{% url 'employee:employee_list' %}">
+                <i class="fa-solid fa-eraser"></i>
+                Clear
+              </a>
+              <button class="btn btn-info" type="submit" name="export">
+                <span class="fas fa-solid fa-download me-1"></span>
+                <!-- Export -->
+                Download
+              </button>
+              <button class="btn btn-primary" type="submit">
+                <i class="fa-solid fa-magnifying-glass me-1 fs-1"></i>Find
+              </button>
+          </div>
+        </form>
+      
+      </div>
+    </div>
+</div>

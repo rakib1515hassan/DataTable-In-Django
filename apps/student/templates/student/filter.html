@@ -1,0 +1,84 @@
+{% load static %}
+<div class="modal fade" id="filter-modal" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
+      <div class="modal-content position-relative">
+          <div class="position-absolute top-0 end-0 mt-2 me-2 z-index-1">
+              <button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="get">
+              <div class="modal-body p-0">
+                  <div class="rounded-top-lg py-3 ps-4 pe-6 bg-light">
+                      <h4 class="mb-1" id="modalExampleDemoLabel"><span class="fas fa-filter me-2 fs-1"></span>Student Filter</h4>
+                  </div>
+                  <div class="p-4 pb-0">
+                      <div class="mb-2">
+                          <label for="subject">Subject</label>
+                          <div>
+                              <select class="form-select select_subject" id="subject" size="1" name="subject" style="width: 100%;">
+                                  <option value="">select subject</option>
+                                  {% for sub_key, sub_value in subjects %}
+                                  <option value="{{ sub_key }}">{{ sub_value }}</option>
+                                  {% endfor %}
+                              </select>
+                          </div>
+                      </div>
+
+                      <div class="mb-3">
+                          <div class="d-flex gap-2">
+                              <div class="flex-fill">
+                                  <label class="form-label" for="city">City</label>
+                                  <div>
+                                      <select class="form-select select_city" id="city" size="1" name="is_verified" style="width: 100%;">
+                                          <option value="">select city</option>
+                                          {% for city in citys %}
+                                          <option value="{{city.id}}">{{city.name}}</option>
+                                          {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+
+                              <div class="flex-fill">
+                                  <label class="form-label" for="is_verified">Varified</label>
+                                  <div>
+                                      <select class="form-select select_varify" id="is_verified" size="1" name="is_verified" style="width: 100%;">
+                                          <option value="">select</option>
+                                          <option value="true">True</option>
+                                          <option value="false">False</option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="mb-3">
+                          <label class="form-label" for="created_at">Enroll Time Range</label>
+                          <div class="d-flex gap-2">
+                              <div class="flex-fill">
+                                  <span class="fs--1">From</span>
+                                  <input class="form-control" type="date" name="created_at_from" />
+                              </div>
+                              <div class="flex-fill">
+                                  <span class="fs--1">To</span>
+                                  <input class="form-control" type="date" name="created_at_to" />
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer mt-3">
+                  <button id="clear-filter" class="btn btn-secondary" type="button">
+                      <i class="fa-solid fa-eraser"></i>
+                      Clear
+                  </button>
+
+                  <button class="btn btn-info" type="button" name="export">
+                      <span class="fas fa-solid fa-download me-1"></span>
+                      Download
+                  </button>
+
+                  <button class="btn btn-primary" type="button" name="find"><i class="fa-solid fa-magnifying-glass me-1 fs-1"></i>Find</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>

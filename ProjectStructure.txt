@@ -1,0 +1,57 @@
+Demo-Django-Project-2/
+|-- manage.py
+|-- requirements.txt
+|
+|-- django_setting_core/
+|   |-- settings.py
+|   |-- urls.py
+|   |-- ...
+|-- apps/
+|   |-- auth/
+|   |   |-- migrations/
+|   |   |-- templates/
+|   |   |-- admin.py
+|   |   |-- apps.py
+|   |   |-- models.py
+|   |   |-- views.py
+|   |   |-- urls.py
+|   |   
+|   |-- users/
+|   |   |-- migrations/
+|   |   |-- templates/
+|   |   |-- admin.py
+|   |   |-- apps.py
+|   |   |-- models.py
+|   |   |-- views.py
+|   |   |-- urls.py
+|   |   
+|   |-- employee/
+|   |   |-- migrations/
+|   |   |-- templates/
+|   |   |-- admin.py
+|   |   |-- apps.py
+|   |   |-- models.py
+|   |   |-- views.py
+|   |  
+|
+|-- static/
+|-- media/
+|-- templates/
+
+
+
+
+
+|-- apps/
+|   |-- auth/
+|   |   |-- migrations/
+|   |   |-- templates/
+|   |   |   |--auth/
+|   |   |   |   |--login.html
+|   |   |   |   |--logout.html
+|   |   |   
+|   |   |-- admin.py
+|   |   |-- apps.py
+|   |   |-- models.py
+|   |   |-- views.py
+|   |   |-- urls.py

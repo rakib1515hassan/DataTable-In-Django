@@ -1,0 +1,463 @@
+{% extends 'layouts/master.html' %}
+
+{% load static %}
+
+{% block title %}
+    Student | Data List
+{% endblock title %}
+
+
+
+{% block styles %}
+
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"> -->
+
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
+
+<!-- Include Select2 CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+
+
+<style>
+    div.dt-container select.dt-input {
+        padding: 0px!important;
+    }
+
+    label {
+        margin-left: 6px;
+        font-size: .8333333333rem;
+        font-weight: 700;
+        letter-spacing: .02em;
+        text-transform: capitalize;
+    }
+
+    div.dt-container .dt-paging .dt-paging-button.current, div.dt-container .dt-paging .dt-paging-button.current:hover {
+        background: rgb(26, 26, 222);
+        color: white!important;
+        padding: 4px;
+    }
+
+    div.dt-container .dt-paging .dt-paging-button, div.dt-container .dt-paging .dt-paging-button:hover {
+        padding: 4px;
+    }
+
+    .select2-container--default .select2-selection--single {
+        height: 40px !important;
+    }
+
+    .select2-container--default .select2-selection__rendered {
+        line-height: 40px !important;
+    }
+
+
+</style>
+{% endblock styles %}
+
+
+
+
+{% block content %}
+<div class="card mb-3">
+
+    <!-- Header Content -->
+    <div class="card-header bg-light">
+        <div class="row flex-between-center">
+
+            <div class="col-4 col-sm-auto d-flex align-items-center pe-0">
+                <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">
+                    <span class="fas fa-user-friends fs-1 me-2"></span>Student List
+                </h5>
+            </div>
+
+            <div class="col-8 col-sm-auto ms-auto text-end ps-0">
+                <div class="d-flex flex-row" id="orders-actions">
+                    <a href="{% url 'student:student_create' %}" class="btn btn-konnect-default btn-sm" type="button">
+                        <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span>
+                        <span class="d-none d-sm-inline-block ms-1">New</span>
+                    </a>
+                    <button class="btn btn-konnect-default btn-sm mx-2" type="button" 
+                        data-bs-toggle="modal" data-bs-target="#filter-modal">
+                        <span class="fas fa-filter"></span>
+                        <span class="d-none d-sm-inline-block ms-1">Filter</span>
+                    </button>
+
+                    <button class="btn btn-konnect-default btn-sm" type="button"
+                        data-bs-toggle="modal" data-bs-target="#export-all-data">
+                        <span class="fas fa-external-link-alt"></span>
+                        <span class="d-none d-sm-inline-block ms-1">Export All</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Body Content -->
+    <div class="card-body p-4">
+
+        <!-- <div class="col-4">
+            <div class="mb-2">
+                <label for="subject">Subject</label>
+                <div class="">
+                    <select class="form-select singel_select" id="subject" size="1" name="subject">
+                        <option value="">select subject</option>
+                        {% for sub_key, sub_value in subjects %}
+                            <option value="{{ sub_key }}">{{ sub_value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="table-responsive">
+            <table width="100%" class="table table-hover table-bordered table-striped fs--1 mb-0" id="items-table">
+                <thead class="bg-200 text-900">
+                    <tr style="height: 50px;">
+                        <th class="text-center">ID</th>
+                        <th class="">Image</th>
+                        <th class="">Name/Gender</th>
+                        <th class="">Phone/City</th>
+                        <th class="">Roll</th>
+                        <th class="">Subject</th>
+                        <th class="">Verified</th>
+                        <th class="">Created/Updated</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+    <!-- Include Delete Modal -->
+    {% include 'student/delete.html' %}
+
+    <!-- Export Modal -->
+    {% include 'common/export_data.html' %}
+
+    <!-- Filter Modal -->
+    {% include 'student/filter.html' %}
+
+
+{% endblock content %}
+
+
+
+
+{% block js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> -->
+
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
+
+
+    <!-- Include Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <!-- For Select 2 -->
+    <script>
+        $(document).ready(function () {
+          $(".select_subject").select2({
+                placeholder: "Choose Subject",
+                allowClear: true,
+                dropdownParent: $("#filter-modal")
+          });
+          $(".select_city").select2({
+                placeholder: "Choose City",
+                allowClear: true,
+                dropdownParent: $("#filter-modal")
+          });
+          $(".select_varify").select2({
+                placeholder: "Choose Varification",
+                allowClear: true,
+                dropdownParent: $("#filter-modal")
+          });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var studentTable = $('#items-table').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": "{% url 'student:student_data_table_data' %}",
+
+                "order": [[0, "desc"]],  // Descending order = [[0, "desc"]] and Ascending order = By default
+
+                "columns": [
+                    {"data": "id",    "width": "5%"}, 
+
+                    // Image data
+                    {
+                        "data": "image", 
+                        "orderable" : false,
+                        "searchable": false,
+                        "width": "10%",
+
+                        "render": function(data, type, row) {
+                            var id = row.id; // Get the id from the row data
+
+                            // Check if image exists   Student/Images/Hassan.png   Student/Images/Hassan.png
+                            if (data) {
+                                var imageUrl = "/media/" + data;
+
+                                return `
+                                    <div class="avatar avatar-3xl">
+                                        <img class="img-fluid rounded" src="${imageUrl}" alt="" width="300" />
+                                    </div>`;
+                            } else {
+                                // If no image, show default image
+                                return `
+                                    <div class="avatar avatar-3xl">
+                                        <img class="img-fluid rounded" src="{% static 'assets/img/default.jpg' %}" alt="" width="300" />
+                                    </div>`;
+                            }
+                        }
+                    },
+                    
+                    // Name and Gender
+                    // {"data": "name",  "width": "30%"}, 
+                    {
+                        "data": null,
+                        "orderable" : false,
+                        "searchable": false,
+                        "width": "20%", 
+
+                        "render": function(data, type, row) {
+                            // Render both name and gender in the same cell
+                            return `
+                                <td class="text-center">
+                                    <span class="badge badge-soft-info fs--1">${row.name}</span><br>
+                                    <span class="badge bg-light text-dark fs--1 mt-1">${row.dob}</span><br>
+                                    <span class="badge badge-soft-light fs--1 mt-1">${row.gender}</span>
+                                </td>`;
+                        }
+                    },
+                    
+                    // Phone/City
+                    // {"data": "phone", "width": "20%"}, 
+                    {
+                        "data": "null",
+                        "orderable" : false,
+                        "searchable": false, 
+                        "width": "15%",
+
+                        "render": function(data, type, row) {
+                            var phone = row.phone; 
+                            var city = row.city ? row.city : '';
+                            
+                            return `
+                                <span class="badge bg-light text-dark fs--1">${phone}</span><br>
+                                <span class="badge bg-light text-dark fs--1 mt-1">${city}</span>`;
+                        }
+                    },
+
+                    // Roll
+                    {"data": "roll",  "width": "10%", "orderable" : true, "searchable": true},
+
+                    // Subject
+                    {
+                        "data": "subject",
+                        "width": "10%", 
+
+                        "render": function(data, type, row) {
+                            return `<span class="badge bg-light text-dark fs--1 mt-1">${row.subject}</span>`;
+                        }
+                    },
+                    
+                    // is_verified
+                    {
+                        "data": "is_verified",
+                        "width": "5%",
+                        "render": function(data, type, row) {
+                            if (data == true) {
+                                return '<div class="d-flex justify-content-center"><i class="fa-solid fa-check text-success fs-3"></i></div>';
+                            } else {
+                                return '<div class="d-flex justify-content-center"><i class="fa-solid fa-xmark text-danger fs-3"></i></div>';
+                            }
+                        },
+                    },
+
+                    // Created/Updated
+                    {
+                        "data": null,
+                        "orderable" : false,
+                        "searchable": false, 
+                        "width": "10%",
+                        "render": function(data, type, row) {
+
+                            var created_at = row.created_at; 
+                            var updated_at = row.updated_at;
+
+                            return `
+                                <span class="badge badge-soft-light fs--2">${created_at}</span><br>
+                                <span class="badge badge-soft-light fs--2 mt-1">${updated_at}</span>`; 
+                        }
+                    },
+
+                    // Action (View, Update, Delete)
+                    {
+                        "data": null,
+                        "orderable" : false,
+                        "searchable": false,
+                        "width": "10%",
+
+                        "render": function(data, type, row) {
+                            var id = data.id; // Get the id from the data
+
+                            return `
+                                <ul class="action text-center p-0 d-flex" style="flex-direction: column;">
+                                    <li>
+                                        <a class="text-primary" href="${DetailsRoute(id)}">
+                                            <span class="fas fa-eye text-primary"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="text-primary" href="${UpdateRoute(id)}">
+                                            <span class="fas fa-edit text-warning"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="text-danger cursor-pointer delete-btn" data-id="${data.id}" data-bs-toggle="modal" data-bs-target="#delete_student">
+                                            <span class="fas fa-trash text-danger"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            `;
+                        }
+                    }
+                ],
+                "columnDefs": [
+                    {"targets": -1, "className": "text-center"} // Align the Actions column to center
+                ]
+            });
+
+
+            // Function to generate the show route URL
+            function DetailsRoute(id) {
+                return "{% url 'student:student_details' 0 %}".replace('0', id);
+            }
+
+            // Function to generate the update route URL
+            function UpdateRoute(id) {
+                return "{% url 'student:student_update' 0 %}".replace('0', id);
+            }
+
+
+
+
+            
+            // Delete Button এ click করলে, তা Modal Open করে student ID কে Yes Button এ Set করে 
+            $(document).on('click', '.delete-btn', function() {
+
+                var studentId = $(this).data('id');  // Get the student ID from the data-id attribute
+                openDeleteModal(studentId);         // Call the function to open the delete modal and set the student ID
+
+            });
+
+
+            // Modal এর Yes Butten এ data-id attribute এর মধ্যে student ID Set করে
+            function openDeleteModal(studentId) {
+                
+                $('#confirmDeleteBtn').data('id', studentId); // Set the data-id attribute of the button with the student ID
+                $('#delete_student').modal('show');           // Open the delete modal
+
+            }
+
+
+            // যখন Modal এর Yes Button click করা হয় তখন Ajax Request Send হয়
+            $(document).on('click', '#confirmDeleteBtn', function() {
+                
+                var studentId = $(this).data('id');  // Get the student ID from the button's data-id attribute
+
+                // Get the CSRF token value from the meta tag
+                var csrfToken = $('meta[name=csrf-token]').attr('content');
+
+                console.log("Student ID = ",studentId);
+
+                // Perform AJAX request to delete the student
+                $.ajax({
+                    url  : "{% url 'student:student_delete' %}",
+                    type : 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken   // Include the CSRF token in the request headers
+                    },
+                    data: { 'std_id': studentId },
+
+                    success: function(response) {
+                        if (response.success) {
+                            // Reload the DataTable upon successful deletion
+                            $('#items-table').DataTable().ajax.reload();
+                            // Close the modal
+                            $('#delete_student').modal('hide');
+                            // Optionally, display a success message
+                            console.log('Student deleted successfully');
+                        } else {
+                            // Display an error message if deletion fails
+                            console.error('Deletion failed:', response.error);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX request failed:', error);
+                    }
+                });
+            });
+
+
+
+        });
+    
+
+        // NOTE: This is for Filter Data in the DataTable
+
+        $(document).ready(function() {
+            // Add event listener to the "Find" button in the modal form
+            $('#filter-modal button[name="find"]').on('click', function() {
+                // Get selected values from form fields
+                var subject = $('#subject').val();
+                var city = $('#city').val();
+                var is_verified = $('#is_verified').val();
+                var created_at_from = $('[name="created_at_from"]').val();
+                var created_at_to = $('[name="created_at_to"]').val();
+
+                // Construct the new URL with filter parameters
+                var url = "{% url 'student:student_data_table_data' %}?subject=" + subject + "&city=" + city + "&is_verified=" + is_verified + "&created_at_from=" + created_at_from + "&created_at_to=" + created_at_to;
+
+                // Reload the DataTable with the updated URL
+                $('#items-table').DataTable().ajax.url(url).load();
+
+                // Close the modal
+                $('#filter-modal').modal('hide');
+            });
+
+
+            // Add event listener to the "Clear" button in the modal form
+            $('#filter-modal #clear-filter').on('click', function() {
+                // Clear selected filter values
+                $('#subject, #city, #is_verified').val('').trigger('change');
+                $('[name="created_at_from"], [name="created_at_to"]').val('');
+
+                // Construct the URL without any filter parameters
+                var url = "{% url 'student:student_data_table_data' %}";
+
+                // Reload the DataTable with the updated URL
+                $('#items-table').DataTable().ajax.url(url).load();
+
+                // Close the modal
+                $('#filter-modal').modal('hide');
+            });
+        });
+
+
+    </script>
+    
+
+{% endblock js %}
