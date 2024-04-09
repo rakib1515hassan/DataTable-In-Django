@@ -28,7 +28,7 @@
                               <div class="flex-fill">
                                   <label class="form-label" for="city">City</label>
                                   <div>
-                                      <select class="form-select select_city" id="city" size="1" name="is_verified" style="width: 100%;">
+                                      <select class="form-select select_city" id="city" size="1" name="city" style="width: 100%;">
                                           <option value="">select city</option>
                                           {% for city in citys %}
                                           <option value="{{city.id}}">{{city.name}}</option>
@@ -71,9 +71,9 @@
                       Clear
                   </button>
 
-                  <button class="btn btn-info" type="button" name="export">
-                      <span class="fas fa-solid fa-download me-1"></span>
-                      Download
+                  <button class="btn btn-info" type="submit" id="download-btn" name="export">
+                        <span class="fas fa-solid fa-download me-1"></span>
+                        Download
                   </button>
 
                   <button class="btn btn-primary" type="button" name="find"><i class="fa-solid fa-magnifying-glass me-1 fs-1"></i>Find</button>

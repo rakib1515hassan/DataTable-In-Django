@@ -1,4 +1,4 @@
-Demo-Django-Project-2/
+DataTable-In-Django/
 |-- manage.py
 |-- requirements.txt
 |

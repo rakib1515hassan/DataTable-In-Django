@@ -96,21 +96,6 @@
 
     <!-- Body Content -->
     <div class="card-body p-4">
-
-        <!-- <div class="col-4">
-            <div class="mb-2">
-                <label for="subject">Subject</label>
-                <div class="">
-                    <select class="form-select singel_select" id="subject" size="1" name="subject">
-                        <option value="">select subject</option>
-                        {% for sub_key, sub_value in subjects %}
-                            <option value="{{ sub_key }}">{{ sub_value }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-        </div> -->
-
         <div class="table-responsive">
             <table width="100%" class="table table-hover table-bordered table-striped fs--1 mb-0" id="items-table">
                 <thead class="bg-200 text-900">
@@ -253,10 +238,11 @@
                         "render": function(data, type, row) {
                             var phone = row.phone; 
                             var city = row.city ? row.city : '';
+                            var city_bd = row.city_bd ? row.city_bd : '';
                             
                             return `
                                 <span class="badge bg-light text-dark fs--1">${phone}</span><br>
-                                <span class="badge bg-light text-dark fs--1 mt-1">${city}</span>`;
+                                <span class="badge bg-light text-dark fs--1 mt-1">${city}(${city_bd})</span>`;
                         }
                     },
 
@@ -457,7 +443,15 @@
         });
 
 
+        // Download The Excel File
+        // document.getElementById("download-btn").addEventListener("click", function() {
+        //     document.querySelector('form').submit();
+        // });
+
     </script>
+
+
+
     
 
 {% endblock js %}

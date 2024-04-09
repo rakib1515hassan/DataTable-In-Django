@@ -1,3 +1,4 @@
+# For Data Table
 from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.utils.html import escape
 
@@ -6,6 +7,8 @@ from django.utils import timezone
 from django.utils.dateformat import format
 
 from apps.student.models import Student
+from apps.core.utils2 import CustomPaginator, ExcelDataDownload
+
 
 """
     NOTE:- This is the Data table Integration link
@@ -52,13 +55,13 @@ class StudentDatatableList(BaseDatatableView):
         created_at_to   = self.request.GET.get('created_at_to')
         is_verified_filter = self.request.GET.get('is_verified')
 
-        print("---------------------")
-        print("subject_filter =", subject_filter)
-        print("city_filter =", city_filter)
-        print("is_verified_filter =", is_verified_filter)
-        print("created_at_from =", created_at_from)
-        print("created_at_to =", created_at_to)
-        print("---------------------")
+        # print("---------------------")
+        # print("subject_filter =", subject_filter)
+        # print("city_filter =", city_filter)
+        # print("is_verified_filter =", is_verified_filter)
+        # print("created_at_from =", created_at_from)
+        # print("created_at_to =", created_at_to)
+        # print("---------------------")
 
         if subject_filter:
             qs = qs.filter(subject=subject_filter)
@@ -117,6 +120,7 @@ class StudentDatatableList(BaseDatatableView):
                 'gender': escape(student.get_gender_display()),
                 'phone': escape(student.phone),
                 'city': escape(student.city.name),
+                'city_bd': escape(student.city.bn_name),
                 'roll': escape(student.roll),
                 'subject': escape(student.get_subject_display()),
                 'is_verified': student.is_verified,
@@ -125,3 +129,71 @@ class StudentDatatableList(BaseDatatableView):
             })
         return json_data
     
+
+    # def get(self, request, *args, **kwargs):
+
+    #     if 'export' in request.GET:
+    #         qs = self.filter_queryset(self.get_initial_queryset())
+    #         export_data = self.prepare_results(qs)
+
+    #         print("--------------------")
+    #         print("Total Data =", export_data.count())
+    #         print("--------------------")
+
+    #         if export_data:
+    #             excel_data = [
+    #                 ['S/N', 'Name', 'Roll No' 'Phone', 'Gender', 'City', 'Subject', 'Birth Date', 'Create Date', 'Updated Date', 'Verification Status'],
+    #             ]
+
+    #             for index, obj in enumerate(export_data, start=1):
+    #                 dob = obj.dob.strftime('%d-%m-%Y') if obj.dob else ''
+    #                 excel_data.append([
+    #                     index,
+    #                     obj.name,
+    #                     obj.roll,
+    #                     obj.phone,
+    #                     obj.gender.capitalize() if obj.gender else '',
+    #                     obj.city,
+    #                     obj.subject,
+    #                     dob,
+    #                     obj.created_at.strftime('%d-%m-%Y %I:%M:%S %p'),
+    #                     obj.updated_at.strftime('%d-%m-%Y %I:%M:%S %p'),
+    #                     'Verified' if obj.is_verified else 'Unverified',
+    #                 ])
+                
+    #             excel_exporter = ExcelDataDownload(excel_data, filename='StudentData_export')
+    #             return excel_exporter.generate_response()
+
+    #     return super().get(request, *args, **kwargs)
+    
+
+    
+        # if 'export' in request.GET:
+        #     export_data = qs
+        
+        # if export_data:
+
+        #     # Prepare the data for Excel export
+        #     excel_data = [
+        #         ['S/N', 'Name', 'Roll No' 'Phone', 'Gender', 'City', 'Subject', 'Birth Date', 'Create Date', 'Updated Date', 'Verification Status'],
+        #     ]
+
+        #     for index, obj in enumerate(export_data, start=1):
+        #         dob = obj.dob.strftime('%d-%m-%Y') if obj.dob else ''
+        #         excel_data.append([
+        #             index,
+        #             obj.name,
+        #             obj.roll,
+        #             obj.phone,
+        #             obj.gender.capitalize() if obj.gender else '',
+        #             obj.city,
+        #             obj.subject,
+        #             dob,
+        #             obj.created_at.strftime('%d-%m-%Y %I:%M:%S %p'),
+        #             obj.updated_at.strftime('%d-%m-%Y %I:%M:%S %p'),
+        #             'Verified' if obj.is_verified else 'Unverified',
+        #         ])
+
+            
+        #     excel_exporter = ExcelDataDownload(excel_data, filename='StudentData_export')
+        #     return excel_exporter.generate_response()
